@@ -3,6 +3,7 @@ using KG.Weather.Config;
 using KG.Weather.Data;
 using KG.Weather.Services;
 using KG.Weather.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -75,6 +76,8 @@ namespace KG.Weather
                     return localTime.Hours == 3 && localTime.Minutes == 55 && localTime.Seconds == 10;
                 });
             });
+
+            services.AddMediatR();
 
             services.AddScoped<ICityRepository, CityRepository>();
             services.AddScoped<IWorkerRepository, WorkerRepository>();

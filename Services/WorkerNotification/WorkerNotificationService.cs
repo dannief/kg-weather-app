@@ -34,7 +34,7 @@ namespace KG.Weather.Services
 
         public async Task NotifyWorkers()
         {
-            var cities = await cityRepository.GetCities();
+            var cities = (await cityRepository.GetCities()).Select(c => c.FullName);
 
             var rainForecast = await weatherService.GetRainForecastForTomorrow(cities);
 
@@ -43,10 +43,10 @@ namespace KG.Weather.Services
             var smtpClient = new SmtpClient(smtpServerSettings.Host, smtpServerSettings.Port);
 
             workers
-                .GroupBy(worker => worker.CityId)
+                .GroupBy(worker => worker.City.FullName)
                 .Select(workerGroup =>
                 {
-                    var forecastForCity = rainForecast.Single(f => f.CityId == workerGroup.Key);
+                    var forecastForCity = rainForecast.Single(f => f.City == workerGroup.Key);
 
                     var numHours = forecastForCity.IsRainForecasted ? 4 : 8;
 
@@ -59,7 +59,7 @@ namespace KG.Weather.Services
                             <div style=""text-align:center;width:400px;border:1px solid lightblue;padding:10px"">
                               <p><strong>Forcast for tommorow</strong></p></br>
                               <em>{forecastForCity.Summary}</em>
-                              <img src=""http:{forecastForCity.ImageUrl}"">
+                              <img src=""http:{forecastForCity.IconUrl}"">
                             </div>
                             <p>Regards,</br></br>Management"
                     };

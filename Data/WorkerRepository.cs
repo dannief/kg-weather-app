@@ -24,7 +24,7 @@ namespace KG.Weather.Data
 
             if (!cache.TryGetValue(cacheKey, out List<Worker> workers))
             {
-                workers = await dbContext.Workers.ToListAsync();
+                workers = await dbContext.Workers.Include(x => x.City).ToListAsync();
 
                 cache.Set(cacheKey, workers);
             }

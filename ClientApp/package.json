@@ -1,5 +1,5 @@
 {
-  "name": "KG.Weather",
+  "name": "kg-weather",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -14,7 +14,8 @@
     "react-scripts": "1.0.17",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "react-open-weather": "0.3.0"
   },
   "scripts": {
     "start": "rimraf ./build && react-scripts start",

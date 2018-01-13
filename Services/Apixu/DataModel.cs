@@ -59,6 +59,7 @@ namespace APIXULib
         public double maxwind_kph { get; set; }
         public double totalprecip_mm { get; set; }
         public double totalprecip_in { get; set; }
+        public double avghumidity { get; set; }
         public Condition condition { get; set; }
     }
 
