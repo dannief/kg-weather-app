@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using KG.Weather.Data.Models;
+using KG.Weather.Services.Weather.Model;
 
 namespace KG.Weather.Services
 {

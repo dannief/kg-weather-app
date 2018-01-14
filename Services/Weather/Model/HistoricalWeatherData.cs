@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace KG.Weather.Services
+namespace KG.Weather.Services.Weather.Model
 {
     public class HistoricalWeatherData
     {

@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Logging;
-using System;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace KG.Weather
 {
@@ -79,6 +79,11 @@ namespace KG.Weather
 
             services.AddMediatR();
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "KG Weather App API", Version = "v1" });
+            });
+
             services.AddScoped<ICityRepository, CityRepository>();
             services.AddScoped<IWorkerRepository, WorkerRepository>();
             services.AddSingleton<ISystemClock, SystemClock>();
@@ -99,7 +104,7 @@ namespace KG.Weather
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                // app.UseDeveloperExceptionPage();
             }
             else
             {
@@ -111,6 +116,12 @@ namespace KG.Weather
 
             app.UseMvc();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "KG Weather App API v1");
+            });
+
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
@@ -121,7 +132,7 @@ namespace KG.Weather
                 }
             });
 
-            app.UseDNTScheduler();
+            app.UseDNTScheduler();            
 
             new Seeder(dbContext, userManager, roleManager).SeedDb().Wait();
         }

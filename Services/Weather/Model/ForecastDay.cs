@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KG.Weather.Services
+namespace KG.Weather.Services.Weather.Model
 {
     public class ForecastDay
     {
@@ -12,7 +12,7 @@ namespace KG.Weather.Services
 
         public string IconUrl { get; set; }
 
-        public (double Min, double Max, double Avg) Temperature { get; set; }
+        public TemperatureInfo Temperature { get; set; }
         
         public double Wind { get; set; }
 

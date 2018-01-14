@@ -128,7 +128,7 @@ namespace APIXULib
 
         public static string Date(DateTime date)
         {
-            return "dt" + date.ToString("yyyy-MM-dd");
+            return "dt=" + date.ToString("yyyy-MM-dd");
         }
 
         public static string PrepareQueryParameter(this GetBy getby, string value)

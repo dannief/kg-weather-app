@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using KG.Weather.Features;
+using KG.Weather.Features.ReferenceValues;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

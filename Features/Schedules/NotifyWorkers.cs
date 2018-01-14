@@ -3,7 +3,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace KG.Weather.Features
+namespace KG.Weather.Features.Schedules
 {
     public class NotifyWorkers
     {

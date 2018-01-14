@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace KG.Weather.Services
-{
+namespace KG.Weather.Services.Weather.Model
+{ 
     public class Forecast
     { 
         public string City { get; set; }

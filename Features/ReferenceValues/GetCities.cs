@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace KG.Weather.Features
+namespace KG.Weather.Features.ReferenceValues
 {
     public class GetCities
     {
@@ -16,7 +16,7 @@ namespace KG.Weather.Features
 
         public class Result
         {
-            public List<City> Cities { get; set; }
+            public List<City> Data { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Result>
@@ -34,7 +34,7 @@ namespace KG.Weather.Features
 
                 return new Result
                 {
-                    Cities = cities
+                    Data = cities
                 };
             }
         }

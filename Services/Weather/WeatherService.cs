@@ -1,5 +1,6 @@
 ﻿using APIXULib;
 using KG.Weather.Config;
+using KG.Weather.Services.Weather.Model;
 using Microsoft.Extensions.Internal;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace KG.Weather.Services
             this.apiSettings = apiSettings;
         }
 
-        public async Task<List<Forecast>> GetForecast(IEnumerable<string> cities, int numDays)
+        public async Task<List<Weather.Model.Forecast>> GetForecast(IEnumerable<string> cities, int numDays)
         {
             if (numDays > 14) numDays = 14;
 
@@ -37,7 +38,7 @@ namespace KG.Weather.Services
             return forecasts;
         }
 
-        public async Task<Forecast> GetHistory(string city, int lastNumberOfDays)
+        public async Task<Weather.Model.Forecast> GetHistory(string city, int lastNumberOfDays)
         {
             if (lastNumberOfDays > 7) lastNumberOfDays = 7;
 
@@ -46,12 +47,12 @@ namespace KG.Weather.Services
                     await Task.WhenAll(
                         Enumerable.Range(1, lastNumberOfDays)
                         .Reverse()
-                        .Select(i => clock.UtcNow.AddDays(-i).Date)
+                        .Select(i => clock.UtcNow.Date.AddDays(-i))
                         .Select(date => apixu.GetWeatherData(apiSettings.Key, GetBy.CityName, city, date)))
                 )
                 .Select(weatherModel => ToForecastModel(weatherModel))
                 .Aggregate(
-                    new Forecast { City = city },
+                    new Weather.Model.Forecast { City = city },
                     (data, next) =>
                     {
                         data.Days.AddRange(next.Days);
@@ -105,11 +106,11 @@ namespace KG.Weather.Services
             return historicalData;                
         }
 
-        private Forecast ToForecastModel(WeatherModel weatherModel)
+        private Weather.Model.Forecast ToForecastModel(WeatherModel weatherModel)
         {
             var forecastDays = weatherModel.forecast.forecastday.Select(x => new { x.date, x.day });
 
-            return new Forecast
+            return new Weather.Model.Forecast
             {
                 City = $"{weatherModel.location.name}, {weatherModel.location.country}",
                 Days = forecastDays.Select(forecastInfo => new ForecastDay
@@ -120,7 +121,12 @@ namespace KG.Weather.Services
                     IconUrl = "http://:" + forecastInfo.day.condition.icon,
                     IsRainForecasted = forecastInfo.day.totalprecip_in > 0,
                     Summary = forecastInfo.day.condition.text,
-                    Temperature = (forecastInfo.day.mintemp_c, forecastInfo.day.maxtemp_c, forecastInfo.day.avgtemp_c),
+                    Temperature = new TemperatureInfo
+                    {
+                        Min = forecastInfo.day.mintemp_c,
+                        Max = forecastInfo.day.maxtemp_c,
+                        Avg = forecastInfo.day.avgtemp_c
+                    },
                     Wind = forecastInfo.day.maxwind_kph,
                     Precipitation = forecastInfo.day.totalprecip_mm
                 }).ToList()

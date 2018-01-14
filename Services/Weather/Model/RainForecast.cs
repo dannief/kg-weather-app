@@ -1,4 +1,4 @@
-﻿namespace KG.Weather.Services
+﻿namespace KG.Weather.Services.Weather.Model
 {
     public class RainForecast
     {
