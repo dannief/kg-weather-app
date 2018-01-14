@@ -31,7 +31,7 @@ export default props => (
         </LinkContainer>
         <LinkContainer to={'/forecasts'}>
           <NavItem>
-            <Glyphicon glyph="th-list" /> Fetch data
+            <Glyphicon glyph="th-list" /> Forecast Summary
           </NavItem>
         </LinkContainer>
       </Nav>

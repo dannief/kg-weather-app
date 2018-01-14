@@ -27,14 +27,14 @@ const actionCreators = {
         }
       })
 
-      dispatch({ type: FETCH_FORECAST, payload: forecasts })
+      dispatch({ type: FETCH_FORECASTS, payload: forecasts })
     }
   },
 }
 
 const reducer = (state = null, action) => {
   switch (action.type) {
-    case FETCH_FORECAST:
+    case FETCH_FORECASTS:
       return action.payload
     default:
       return state

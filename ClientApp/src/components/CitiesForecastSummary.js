@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import TodayForecast from 'react-open-weather/src/js/components/TodayForecast'
+import React from 'react'
+//import { connect } from 'react-redux'
+import DayForecast from './DayForecast'
 
 const CitiesForecastSummary = () => (
-  <TodayForecast
+  <DayForecast
+    location="Kingston, Jamaica"
     todayData={{
       icon: 1009,
       temperature: {
