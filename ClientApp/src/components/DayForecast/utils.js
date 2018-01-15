@@ -13,6 +13,7 @@ export default {
       '1087': 'wi-day-thunderstorm',
       '1225': 'wi-day-snow-wind',
       '1135': 'wi-day-fog',
+      '1243': 'wi-day-rain',
     },
     night: {
       '1009': 'wi-cloud',
@@ -25,6 +26,7 @@ export default {
       '1087': 'wi-night-alt-thunderstorm',
       '1225': 'wi-night-alt-snow',
       '1135': 'wi-night-fog',
+      '1243': 'wi-night-rain',
     },
   },
   getIcon(icon) {

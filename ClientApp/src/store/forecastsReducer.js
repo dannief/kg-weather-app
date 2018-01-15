@@ -1,7 +1,9 @@
+import { createSelector } from 'reselect'
+
 const FETCH_FORECASTS = 'FETCH_FORECASTS'
 
 const actionCreators = {
-  requestCities() {
+  fetchCities() {
     return async (dispatch, getState) => {
       // If we have already loaded the forecast, don't load them again
       if (getState().forecast) {
@@ -12,23 +14,35 @@ const actionCreators = {
       const response = await fetch(url)
       const data = (await response.json()).data
 
-      const forecasts = data.map(forecast => {
-        return {
-          [forecast.city]: {
-            location: forecast.city,
-            days: forecast.days.map(day => {
-              return {
-                ...day,
-                description: day.summary,
-                icon: day.iconCode,
-              }
-            }),
-          },
+      const forecasts = data.reduce((forecastMap, forecast) => {
+        forecastMap[forecast.city] = {
+          location: forecast.city,
+          days: forecast.days.map(day => {
+            return {
+              ...day,
+              description: day.summary,
+              icon: day.iconCode,
+            }
+          }),
         }
-      })
+        return forecastMap
+      }, {})
 
       dispatch({ type: FETCH_FORECASTS, payload: forecasts })
     }
+  },
+}
+
+const selectors = {
+  forecasts: state => state.forecasts,
+  get isFetchingForecasts() {
+    return createSelector([this.forecasts], forecasts => !forecasts)
+  },
+  get forecastsArray() {
+    return createSelector(
+      [this.forecasts],
+      forecasts => forecasts && Object.values(forecasts),
+    )
   },
 }
 
@@ -41,4 +55,4 @@ const reducer = (state = null, action) => {
   }
 }
 
-export { reducer as default, actionCreators }
+export { reducer as default, actionCreators, selectors }

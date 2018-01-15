@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react'
 import utils from './utils'
-import WeatherIcon from './WeatherIcon'
+import WeatherIcon from '../WeatherIcon'
+
+import './DayForecast.css'
 
 const DayForecast = props => {
   const { location, todayData, unit } = props
@@ -11,18 +13,19 @@ const DayForecast = props => {
       <div className="rw-box-left">
         <h2>{location}</h2>
         <div className="rw-today">
-          <div className="date">{todayData.date}</div>
+          <div className="date">{utils.formatDate(todayData.date)}</div>
           <div className="hr" />
           <div className="current">
-            {todayData.temperature.current} {units.temp}
+            {Math.round(todayData.temperature.avg)} {units.temp}
           </div>
-          <div className="range">
+          {/* <div className="range">
             {todayData.temperature.max} / {todayData.temperature.min}{' '}
             {units.temp}
-          </div>
+          </div> */}
+          <div className="hr" />
           <div className="desc">
-            <i className={`wicon wi ${todayIcon}`} />
-            &nbsp;{todayData.description}
+            {/* <i className={`wicon wi ${todayIcon}`} />&nbsp; */}
+            {todayData.description}
           </div>
           {/* <div className="hr" />
           <div className="info">
@@ -35,7 +38,9 @@ const DayForecast = props => {
           </div> */}
         </div>
       </div>
-      <div className="rw-box-right">
+      <div
+        className="rw-box-right"
+        style={{ color: todayData.isRainForecasted ? 'firebrick' : 'white' }}>
         <WeatherIcon name={todayIcon} />
       </div>
     </div>

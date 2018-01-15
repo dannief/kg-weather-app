@@ -1,0 +1,9 @@
+.rw-main .rw-today .desc,
+.rw-main .rw-today .desc i {
+  font-size: 30px !important;
+  color: white !important;
+}
+
+.rw-main .rw-today .current {
+  font-size: 20px !important;
+}

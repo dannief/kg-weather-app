@@ -52,7 +52,7 @@ namespace KG.Weather.Services
                 )
                 .Select(weatherModel => ToForecastModel(weatherModel))
                 .Aggregate(
-                    new Weather.Model.Forecast { City = city },
+                    new Weather.Model.Forecast { Location = city },
                     (data, next) =>
                     {
                         data.Days.AddRange(next.Days);
@@ -74,7 +74,7 @@ namespace KG.Weather.Services
 
                     return new RainForecast
                     {
-                        City = forecastModel.City,
+                        City = forecastModel.Location,
                         IsRainForecasted = forecastInfo.IsRainForecasted,
                         Summary = forecastInfo.Summary,
                         IconUrl = forecastInfo.IconUrl
@@ -112,13 +112,14 @@ namespace KG.Weather.Services
 
             return new Weather.Model.Forecast
             {
-                City = $"{weatherModel.location.name}, {weatherModel.location.country}",
+                City = weatherModel.location.name,
+                Location = $"{weatherModel.location.name}, {weatherModel.location.country}",
                 Days = forecastDays.Select(forecastInfo => new ForecastDay
                 {
                     Date = DateTime.ParseExact(forecastInfo.date, "yyyy-MM-dd", CultureInfo.InvariantCulture),
                     Humidity = forecastInfo.day.avghumidity,
                     IconCode = forecastInfo.day.condition.code,
-                    IconUrl = "http://:" + forecastInfo.day.condition.icon,
+                    IconUrl = "http:" + forecastInfo.day.condition.icon,
                     IsRainForecasted = forecastInfo.day.totalprecip_in > 0,
                     Summary = forecastInfo.day.condition.text,
                     Temperature = new TemperatureInfo
