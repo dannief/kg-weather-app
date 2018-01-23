@@ -33,18 +33,54 @@ const actionCreators = {
   },
 }
 
-const selectors = {
-  forecasts: state => state.forecasts,
-  get isFetchingForecasts() {
-    return createSelector([this.forecasts], forecasts => !forecasts)
-  },
-  get forecastsArray() {
-    return createSelector(
-      [this.forecasts],
-      forecasts => forecasts && Object.values(forecasts),
-    )
-  },
-}
+const selectors = (function() {
+  const forecasts = state => state.forecasts
+
+  const isFetchingForecasts = createSelector(
+    [forecasts],
+    forecasts => !forecasts,
+  )
+
+  const forecastsArray = createSelector(
+    [forecasts],
+    forecasts => forecasts && Object.values(forecasts),
+  )
+
+  const tomorrowsForecast = createSelector(
+    [forecastsArray],
+    forecastsArray =>
+      forecastsArray &&
+      forecastsArray.map(f => {
+        return { location: f.location, tomorrow: f.days[1] }
+      }),
+  )
+
+  const isRainForecastedTomorrow = createSelector(
+    [tomorrowsForecast],
+    tommForecasts =>
+      tommForecasts && tommForecasts.some(f => f.tomorrow.isRainForecasted),
+  )
+
+  const forecastDaysByCity = (state, props) =>
+    state.forecasts && state.forecasts[props.city].days
+
+  const getTomorrowsForecastByCity = () =>
+    createSelector([forecastDaysByCity], days => days && days[1])
+
+  const getDaysAfterTommorrowForecastByCity = () =>
+    createSelector([forecastDaysByCity], days => days && days.slice(2))
+
+  return {
+    forecasts,
+    isFetchingForecasts,
+    forecastsArray,
+    tomorrowsForecast,
+    isRainForecastedTomorrow,
+    forecastDaysByCity,
+    getTomorrowsForecastByCity,
+    getDaysAfterTommorrowForecastByCity,
+  }
+})()
 
 const reducer = (state = null, action) => {
   switch (action.type) {

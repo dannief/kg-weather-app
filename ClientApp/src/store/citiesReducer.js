@@ -1,3 +1,5 @@
+import { createSelector } from 'reselect'
+
 const FETCH_CITIES = 'FETCH_CITIES'
 
 const actionCreators = {
@@ -16,6 +18,16 @@ const actionCreators = {
     }
   },
 }
+
+const selectors = (function() {
+  const cities = state => state.cities
+  const isFetchingCities = createSelector([cities], cities => !cities)
+
+  return {
+    cities,
+    isFetchingCities,
+  }
+})()
 
 const reducer = (state = null, action) => {
   switch (action.type) {

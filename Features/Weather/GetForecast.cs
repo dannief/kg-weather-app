@@ -46,7 +46,7 @@ namespace KG.Weather.Features.Weather
 
                 if (numDays == 0)
                 {
-                    numDays = 5;
+                    numDays = 7;
                 }
 
                 var result = await weatherService.GetForecast(cities, numDays);

@@ -25,7 +25,7 @@ namespace KG.Weather.Services
 
         public async Task<List<Weather.Model.Forecast>> GetForecast(IEnumerable<string> cities, int numDays)
         {
-            if (numDays > 14) numDays = 14;
+            if (numDays > 7) numDays = 7;
 
             var forecasts =
                 (

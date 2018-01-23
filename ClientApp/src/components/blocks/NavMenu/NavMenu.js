@@ -8,7 +8,7 @@ export default props => (
   <Navbar inverse fixedTop fluid collapseOnSelect>
     <Navbar.Header>
       <Navbar.Brand>
-        <Link to={'/'}>KG.Weather</Link>
+        <Link to={'/'}>KG Weather Scheduler</Link>
       </Navbar.Brand>
       <Navbar.Toggle />
     </Navbar.Header>
@@ -19,19 +19,9 @@ export default props => (
             <Glyphicon glyph="home" /> Home
           </NavItem>
         </LinkContainer>
-        <LinkContainer to={'/counter'}>
+        <LinkContainer to={'cities'}>
           <NavItem>
-            <Glyphicon glyph="education" /> Counter
-          </NavItem>
-        </LinkContainer>
-        <LinkContainer to={'/fetchdata'}>
-          <NavItem>
-            <Glyphicon glyph="th-list" /> Fetch data
-          </NavItem>
-        </LinkContainer>
-        <LinkContainer to={'/forecasts'}>
-          <NavItem>
-            <Glyphicon glyph="th-list" /> Forecast Summary
+            <Glyphicon glyph="cloud" /> City Forecast
           </NavItem>
         </LinkContainer>
       </Nav>
