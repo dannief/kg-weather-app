@@ -38,9 +38,11 @@ Suggested local SMTP servers that may be used are
 - [Swagger](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
 
 **Frontend**
+
 - [React](https://reactjs.org/)
 - [Redux](https://redux.js.org/)
 - [Reselect](https://github.com/reactjs/reselect)
 - [Recompose](https://github.com/acdlite/recompose)
 - [Grid Styled: Responsive grid system](http://jxnblk.com/grid-styled/)
+
 
