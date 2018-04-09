@@ -1,27 +1,30 @@
 import { createSelector } from 'reselect'
+import { fetchCities } from '../api'
 
 const FETCH_CITIES = 'FETCH_CITIES'
 
 const actionCreators = {
-  requestCities() {
+  loadCities() {
     return async (dispatch, getState) => {
       // If we have already loaded the cities, don't load them again
       if (getState().cities) {
         return
       }
 
-      const url = `v1/reference-values/cities`
-      const response = await fetch(url)
-      const cities = (await response.json()).data
-
-      dispatch({ type: FETCH_CITIES, payload: cities })
+      try {
+        const cities = await fetchCities()
+        dispatch({ type: FETCH_CITIES, payload: cities })
+      } catch (error) {
+        dispatch({ type: FETCH_CITIES, payload: error, error: true })
+      }
     }
   },
 }
 
 const selectors = (function() {
-  const cities = state => state.cities
-  const isFetchingCities = createSelector([cities], cities => !cities)
+  const cities = state => state.cities && state.cities.data
+  const isFetchingCities = state => !state.cities
+  const error = state => state.cities && state.cities.error
 
   return {
     cities,
@@ -32,7 +35,9 @@ const selectors = (function() {
 const reducer = (state = null, action) => {
   switch (action.type) {
     case FETCH_CITIES:
-      return action.payload
+      return action.error
+        ? { data: null, error: true }
+        : { data: action.payload, error: false }
     default:
       return state
   }

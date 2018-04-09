@@ -59,7 +59,7 @@ namespace KG.Weather.Services
                             <div style=""text-align:center;width:400px;border:1px solid lightblue;padding:10px"">
                               <p><strong>Forcast for tommorow</strong></p></br>
                               <em>{forecastForCity.Summary}</em>
-                              <img src=""http:{forecastForCity.IconUrl}"">
+                              <img src=""{forecastForCity.IconUrl}"">
                             </div>
                             <p>Regards,</br></br>Management"
                     };

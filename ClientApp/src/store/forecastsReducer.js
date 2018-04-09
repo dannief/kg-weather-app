@@ -1,45 +1,47 @@
 import { createSelector } from 'reselect'
+import { fetchWeatherForecast } from '../api'
 
 const FETCH_FORECASTS = 'FETCH_FORECASTS'
 
 const actionCreators = {
-  fetchCities() {
+  loadForecasts() {
     return async (dispatch, getState) => {
       // If we have already loaded the forecast, don't load them again
       if (getState().forecast) {
         return
       }
 
-      const url = `v1/weather/forecast`
-      const response = await fetch(url)
-      const data = (await response.json()).data
+      try {
+        const data = await fetchWeatherForecast()
 
-      const forecasts = data.reduce((forecastMap, forecast) => {
-        forecastMap[forecast.city] = {
-          location: forecast.city,
-          days: forecast.days.map(day => {
-            return {
-              ...day,
-              description: day.summary,
-              icon: day.iconCode,
-            }
-          }),
-        }
-        return forecastMap
-      }, {})
+        const forecasts = data.reduce((forecastMap, forecast) => {
+          forecastMap[forecast.city] = {
+            location: forecast.city,
+            days: forecast.days.map(day => {
+              return {
+                ...day,
+                description: day.summary,
+                icon: day.iconCode,
+              }
+            }),
+          }
+          return forecastMap
+        }, {})
 
-      dispatch({ type: FETCH_FORECASTS, payload: forecasts })
+        dispatch({ type: FETCH_FORECASTS, payload: forecasts })
+      } catch (error) {
+        dispatch({ type: FETCH_FORECASTS, payload: error, error: true })
+      }
     }
   },
 }
 
 const selectors = (function() {
-  const forecasts = state => state.forecasts
+  const forecasts = state => state.forecasts && state.forecasts.data
 
-  const isFetchingForecasts = createSelector(
-    [forecasts],
-    forecasts => !forecasts,
-  )
+  const error = state => state.forecasts && state.forecasts.error
+
+  const isFetchingForecasts = state => !state.forecasts
 
   const forecastsArray = createSelector(
     [forecasts],
@@ -62,7 +64,7 @@ const selectors = (function() {
   )
 
   const forecastDaysByCity = (state, props) =>
-    state.forecasts && state.forecasts[props.city].days
+    state.forecasts && state.forecasts.data[props.city].days
 
   const getTomorrowsForecastByCity = () =>
     createSelector([forecastDaysByCity], days => days && days[1])
@@ -72,6 +74,7 @@ const selectors = (function() {
 
   return {
     forecasts,
+    error,
     isFetchingForecasts,
     forecastsArray,
     tomorrowsForecast,
@@ -85,7 +88,9 @@ const selectors = (function() {
 const reducer = (state = null, action) => {
   switch (action.type) {
     case FETCH_FORECASTS:
-      return action.payload
+      return action.error
+        ? { data: null, error: true }
+        : { data: action.payload, error: false }
     default:
       return state
   }

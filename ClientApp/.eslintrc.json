@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "standard",
+    "standard-react",
+    "prettier",
+    "prettier/react",
+    "prettier/standard"
+  ],
+  "plugins": [
+    "prettier"
+  ]
+}
